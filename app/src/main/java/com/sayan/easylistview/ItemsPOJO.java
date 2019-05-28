@@ -1,17 +1,37 @@
 package com.sayan.easylistview;
 
 public class ItemsPOJO {
-    private String names;
+    private String name;
+    private String desc;
+    private String image;
 
-    public ItemsPOJO(String names) {
-        this.names = names;
+    public ItemsPOJO(String name, String desc, String image) {
+        this.name = name;
+        this.desc = desc;
+        this.image = image;
     }
 
-    public String getNames() {
-        return names;
+    public String getName() {
+        return name;
     }
 
-    public void setNames(String names) {
-        this.names = names;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

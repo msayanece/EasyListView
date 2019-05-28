@@ -5,20 +5,18 @@ import android.support.annotation.IntDef;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 public class EasyListView {
 
-    private <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, Method methodName, OnItemClickListener onClickListener) {
+    private <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, ListTile listTile, OnItemClickListener onClickListener) {
         // set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        SimpleTextAdapter<T> adapter = new SimpleTextAdapter<T>(listItems, methodName, onClickListener);
+        SimpleTextAdapter<T> adapter = new SimpleTextAdapter<T>(activity, listItems, listTile, onClickListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -29,6 +27,13 @@ public class EasyListView {
         int IMAGE = 2;
     }
 
+    @IntDef({IconPosition.LEADING, IconPosition.TRAILING})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface IconPosition {
+        int LEADING = 1;
+        int TRAILING = 2;
+    }
+
     public static class Builder<T>{
         private Activity activity;
         private @ViewType int viewType;
@@ -37,6 +42,7 @@ public class EasyListView {
         private Class<T> itemsPOJOClass;
         private OnItemClickListener onClickListener;
         private RecyclerView recyclerView;
+        private ListTile listTile;
 
         public Builder(Activity activity) {
             this.activity = activity;
@@ -45,6 +51,11 @@ public class EasyListView {
         public Builder<T> addRow(@ViewType int viewType, String methodName) throws NoSuchMethodException {
             this.viewType = viewType;
             this.methodName = itemsPOJOClass.getDeclaredMethod(methodName);
+            return this;
+        }
+
+        public Builder<T> addRow(ListTile<T> listTile){
+            this.listTile = listTile;
             return this;
         }
 
@@ -69,7 +80,7 @@ public class EasyListView {
         }
 
         public EasyListView Build(){
-            return new EasyListView(activity, recyclerView, listItems, methodName, onClickListener);
+            return new EasyListView(activity, recyclerView, listItems, listTile, onClickListener);
         }
     }
 
