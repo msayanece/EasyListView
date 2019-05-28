@@ -23,6 +23,10 @@ public class ListTile<T> {
         return description;
     }
 
+    public Class<T> getItemsPOJOClass() {
+        return itemsPOJOClass;
+    }
+
     public ListTile<T> addIcon(@EasyListView.IconPosition int imagePosition, String methodName) throws NoSuchMethodException {
         //check if icon already added
         if (icon != null){
@@ -35,7 +39,7 @@ public class ListTile<T> {
         return this;
     }
 
-    public ListTile<T> addTitle(String methodName) throws NoSuchMethodException {
+    public ListTile<T> addTitle(String methodName) throws IllegalStateException, NoSuchMethodException {
         //check if icon already added
         if (title != null){
             throw new IllegalStateException("Already a title is added");
@@ -69,7 +73,7 @@ public class ListTile<T> {
             this.methodName = methodName;
         }
 
-        public int getImagePosition() {
+        public @EasyListView.IconPosition int getImagePosition() {
             return imagePosition;
         }
 

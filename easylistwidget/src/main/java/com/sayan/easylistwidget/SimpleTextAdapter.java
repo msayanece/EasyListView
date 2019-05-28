@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Activity activity;
     private final List<T> items;
@@ -55,9 +55,10 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
         return items.size();
     }
 
-    private static class SimpleTextViewHolder<T> extends RecyclerView.ViewHolder{
+    private static class SimpleTextViewHolder<T> extends RecyclerView.ViewHolder {
+        private final ImageView trailingImageView;
         private Activity activity;
-        private final ImageView imageView;
+        private final ImageView leadingImageView;
         private final TextView titleTextView;
         private final TextView descriptionTextView;
         private View itemView;
@@ -66,7 +67,8 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
         SimpleTextViewHolder(Activity activity, View itemView, EasyListView.OnItemClickListener onClickListener) {
             super(itemView);
             this.activity = activity;
-            imageView = itemView.findViewById(R.id.imageView);
+            leadingImageView = itemView.findViewById(R.id.leadingImageView);
+            trailingImageView = itemView.findViewById(R.id.trailingImageView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
             this.itemView = itemView;
@@ -74,32 +76,56 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
         }
 
         void setData(List<T> items, ListTile listTile, final int position) {
-            if(listTile.getIcon() != null){
+            if (listTile.getIcon() != null) {
                 String itemViewData = null;
                 try {
-                    itemViewData = getItemViewData(items.get(position), listTile.getClass().getDeclaredMethod(listTile.getIcon().getMethodName()));
-                    Utils.loadImageDirectlyWithSize(activity, itemViewData,imageView, 150, 150);
+                    itemViewData = getItemViewData(items.get(position), listTile.getItemsPOJOClass().getDeclaredMethod(listTile.getIcon().getMethodName()));
+                    switch (listTile.getIcon().getImagePosition()) {
+                        case EasyListView.IconPosition.LEADING:
+                            Utils.loadImageDirectlyWithSize(activity, itemViewData, leadingImageView, 150, 150);
+                            trailingImageView.setVisibility(View.GONE);
+                            break;
+                        case EasyListView.IconPosition.TRAILING:
+                            Utils.loadImageDirectlyWithSize(activity, itemViewData, trailingImageView, 150, 150);
+                            leadingImageView.setVisibility(View.GONE);
+                            break;
+                        default:
+                            leadingImageView.setVisibility(View.GONE);
+                            trailingImageView.setVisibility(View.GONE);
+                            break;
+                    }
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
+                    leadingImageView.setVisibility(View.GONE);
+                    trailingImageView.setVisibility(View.GONE);
                 }
+            } else {
+                leadingImageView.setVisibility(View.GONE);
+                trailingImageView.setVisibility(View.GONE);
             }
-            if(listTile.getTitle() != null){
+            if (listTile.getTitle() != null) {
                 String itemViewData = null;
                 try {
-                    itemViewData = getItemViewData(items.get(position), listTile.getClass().getDeclaredMethod(listTile.getTitle().getMethodName()));
+                    itemViewData = getItemViewData(items.get(position), listTile.getItemsPOJOClass().getDeclaredMethod(listTile.getTitle().getMethodName()));
                     titleTextView.setText(itemViewData);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
+                    titleTextView.setVisibility(View.GONE);
                 }
+            } else {
+                titleTextView.setVisibility(View.GONE);
             }
-            if(listTile.getDescription() != null){
+            if (listTile.getDescription() != null) {
                 String itemViewData = null;
                 try {
-                    itemViewData = getItemViewData(items.get(position), listTile.getClass().getDeclaredMethod(listTile.getDescription().getMethodName()));
+                    itemViewData = getItemViewData(items.get(position), listTile.getItemsPOJOClass().getDeclaredMethod(listTile.getDescription().getMethodName()));
                     descriptionTextView.setText(itemViewData);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
+                    descriptionTextView.setVisibility(View.GONE);
                 }
+            } else {
+                descriptionTextView.setVisibility(View.GONE);
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -114,13 +140,13 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
             try {
                 Class<?> returnType = methodName.getReturnType();
                 Object returnValue = methodName.invoke(model);
-                if (returnType.isInstance(returnValue)){
-                    if (returnValue instanceof String){
-                        return (String)returnValue;
-                    }else {
+                if (returnType.isInstance(returnValue)) {
+                    if (returnValue instanceof String) {
+                        return (String) returnValue;
+                    } else {
                         return "";
                     }
-                }else {
+                } else {
                     return "";
                 }
             } catch (IllegalAccessException e) {

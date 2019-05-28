@@ -1,2 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sayan.easylistwidget" />
+    package="com.sayan.easylistwidget"
+    >
+    <uses-permission android:name="android.permission.INTERNET"/>
+</manifest>
