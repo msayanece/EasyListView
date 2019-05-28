@@ -20,6 +20,11 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         List<ItemsPOJO> listItems = new ArrayList<>();
+        addListItems(listItems);
+        showBasicRecyclerView(recyclerView, listItems);
+    }
+
+    private void addListItems(List<ItemsPOJO> listItems) {
         listItems.add(new ItemsPOJO("Sayan",
                 "The Crazy Leader: Lorem Ipsum is just like every other tool in a designer's toolkit. When used intentionally, it can help the design process. Lorem Ipsum is one of those things like ",
                 "https://at-cdn-s01.audiotool.com/2010/12/01/documents/5obpzwkq/1/cover256x256-5b9c62a0549047c7800ee7b8fc82b2f3.jpg"));
@@ -30,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
         listItems.add(new ItemsPOJO("Arup", "The Java developer", "https://is1-ssl.mzstatic.com/image/thumb/Purple118/v4/36/85/b8/3685b864-3d02-1b6f-04a5-074d1892d8f6/source/256x256bb.jpg"));
         listItems.add(new ItemsPOJO("Krishna", "The source coder", "https://at-cdn-s01.audiotool.com/2010/12/01/documents/5obpzwkq/1/cover256x256-5b9c62a0549047c7800ee7b8fc82b2f3.jpg"));
         listItems.add(new ItemsPOJO("Amit", "The code enjoyer", "https://is1-ssl.mzstatic.com/image/thumb/Purple118/v4/36/85/b8/3685b864-3d02-1b6f-04a5-074d1892d8f6/source/256x256bb.jpg"));
+    }
 
+    private void showBasicRecyclerView(RecyclerView recyclerView, List<ItemsPOJO> listItems) {
         try {
             ListTile<ItemsPOJO> listTile = new ListTile<ItemsPOJO>(ItemsPOJO.class)
                     .addTitle("getName")
