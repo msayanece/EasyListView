@@ -7,6 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.sayan.easylistwidget.adapters.CustomRecyclerAdapter;
+import com.sayan.easylistwidget.adapters.SimpleTextAdapter;
+import com.sayan.easylistwidget.annotations.ID;
+import com.sayan.easylistwidget.annotations.Layout;
+import com.sayan.easylistwidget.listtiles.CustomListTile;
+import com.sayan.easylistwidget.listtiles.ListTile;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;

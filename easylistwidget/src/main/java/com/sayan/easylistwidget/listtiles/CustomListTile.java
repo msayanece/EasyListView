@@ -1,4 +1,4 @@
-package com.sayan.easylistwidget;
+package com.sayan.easylistwidget.listtiles;
 
 import java.lang.reflect.Method;
 

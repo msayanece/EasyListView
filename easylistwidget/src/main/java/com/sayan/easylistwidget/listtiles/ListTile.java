@@ -1,4 +1,6 @@
-package com.sayan.easylistwidget;
+package com.sayan.easylistwidget.listtiles;
+
+import com.sayan.easylistwidget.EasyListView;
 
 public class ListTile<T> {
 
@@ -64,7 +66,7 @@ public class ListTile<T> {
     }
 
 
-    static class Icon{
+    public static class Icon{
         private @EasyListView.IconPosition int imagePosition;
         private String methodName;
 
@@ -82,7 +84,7 @@ public class ListTile<T> {
         }
     }
 
-    static class Title{
+    public static class Title{
         private String methodName;
         private Title(String methodName) {
             this.methodName = methodName;
@@ -97,7 +99,7 @@ public class ListTile<T> {
         }
     }
 
-    static class Description{
+    public static class Description{
         private String methodName;
         private Description(String methodName) {
             this.methodName = methodName;

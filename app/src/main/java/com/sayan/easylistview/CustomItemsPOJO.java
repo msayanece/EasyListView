@@ -1,10 +1,6 @@
 package com.sayan.easylistview;
 
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.sayan.easylistwidget.ID;
-import com.sayan.easylistwidget.Layout;
+import com.sayan.easylistwidget.annotations.ID;
 
 public class CustomItemsPOJO {
     private String name;

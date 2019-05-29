@@ -1,4 +1,4 @@
-package com.sayan.easylistwidget;
+package com.sayan.easylistwidget.adapters;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -8,7 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.sayan.easylistwidget.EasyListView;
+import com.sayan.easylistwidget.R;
+import com.sayan.easylistwidget.Utils;
+import com.sayan.easylistwidget.listtiles.ListTile;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

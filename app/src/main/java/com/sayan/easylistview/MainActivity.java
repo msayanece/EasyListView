@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.sayan.easylistwidget.EasyListView;
-import com.sayan.easylistwidget.ListTile;
+import com.sayan.easylistwidget.listtiles.ListTile;
 
 import java.util.ArrayList;
 import java.util.List;

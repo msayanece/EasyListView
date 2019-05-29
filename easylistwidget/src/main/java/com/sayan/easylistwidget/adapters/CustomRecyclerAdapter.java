@@ -1,4 +1,4 @@
-package com.sayan.easylistwidget;
+package com.sayan.easylistwidget.adapters;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -10,11 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sayan.easylistwidget.EasyListView;
+import com.sayan.easylistwidget.Utils;
+import com.sayan.easylistwidget.listtiles.CustomListTile;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Activity activity;
     private final List<T> items;
     private List<CustomListTile> customListTileList;
