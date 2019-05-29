@@ -12,6 +12,14 @@ import com.bumptech.glide.request.RequestOptions;
 import java.lang.reflect.Field;
 
 public class Utils {
+    /**
+     * Used for loading image views with image URLs
+     * @param context the context or activity object
+     * @param imageURL The URL of the image to be displayed in String
+     * @param imageView The image view as the image container
+     * @param height the required height of the image to be displayed
+     * @param width the required width of the image to be displayed
+     */
     public static void loadImageDirectlyWithSize(Context context, String imageURL, ImageView imageView, int height, int width) {
         try {
             Glide.with(context)
@@ -28,6 +36,11 @@ public class Utils {
         }
     }
 
+    /**
+     * used to find the getter method corresponding to a field Ex: field name = "title" method name = getTitle()
+     * @param field the field of a class
+     * @return the getter method name
+     */
     public static String findGetterMethodName(Field field) {
         StringBuilder methodNameBuilder = new StringBuilder();
         methodNameBuilder.append("get");
