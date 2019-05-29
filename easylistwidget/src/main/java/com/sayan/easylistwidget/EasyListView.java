@@ -9,9 +9,10 @@ import android.view.View;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EasyListView {
 
@@ -22,10 +23,10 @@ public class EasyListView {
         recyclerView.setAdapter(adapter);
     }
 
-    public <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, int rowResID, OnItemClickListener onClickListener) {
+    public <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener) {
         // set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, rowResID, onClickListener);
+        CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, customListTileList, rowResID, onClickListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -53,6 +54,7 @@ public class EasyListView {
         private OnItemClickListener onClickListener;
         private RecyclerView recyclerView;
         private ListTile listTile;
+        private List<CustomListTile> customListTileList;
         private int rowResID;
 
         public Builder(Activity activity) {
@@ -78,32 +80,25 @@ public class EasyListView {
 
         public Builder<T> addItemModel(Class<T> itemsPOJOClass) {
             this.itemsPOJOClass = itemsPOJOClass;
-            checkAnnotations(itemsPOJOClass);
+            customListTileList = generateCustomListTileOfLayout(itemsPOJOClass);
             return this;
         }
-
-        private void checkAnnotations(Class<T> itemsPOJOClass) {
+        private List<CustomListTile> generateCustomListTileOfLayout(Class<T> itemsPOJOClass) {
+            List<CustomListTile> customListTileList = new ArrayList<>();
             if (itemsPOJOClass.isAnnotationPresent(Layout.class)) {
-                int layoutResID = itemsPOJOClass.getAnnotation(Layout.class).value();
-                Log.d("checkAnnotations: ", "layout => " + layoutResID);
+                int layoutResID = Objects.requireNonNull(itemsPOJOClass.getAnnotation(Layout.class)).value();
+                Log.d("layout resource: ", "layout => " + layoutResID);
             }
-            for (Field field : itemsPOJOClass.getDeclaredFields()) {
-                field.setAccessible(true);
-                if (field.isAnnotationPresent(ID.class)) {
-                    int viewResID = field.getAnnotation(ID.class).value();
-                    String methodName = findGetterMethodName(field);
-                    Log.d("checkAnnotations: ", methodName + " => " + viewResID);
+            for (Method method : itemsPOJOClass.getDeclaredMethods()) {
+                method.setAccessible(true);
+                if (method.isAnnotationPresent(ID.class)) {
+                    int viewResID = method.getAnnotation(ID.class).value();
+                    CustomListTile customListTile = new CustomListTile(method, viewResID);
+                    customListTileList.add(customListTile);
+                    Log.d("layout resource: ", method.getName() + " => " + viewResID);
                 }
             }
-        }
-
-        private String findGetterMethodName(Field field) {
-            StringBuilder methodNameBuilder = new StringBuilder();
-            methodNameBuilder.append("get");
-            String fieldName = field.getName();
-            String upperCaseFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            methodNameBuilder.append(upperCaseFieldName);
-            return methodNameBuilder.toString();
+            return customListTileList;
         }
 
         public Builder<T> setOnItemClickListener(OnItemClickListener onClickListener) {
@@ -120,11 +115,9 @@ public class EasyListView {
             if (rowResID == 0) {
                 return new EasyListView(activity, recyclerView, listItems, listTile, onClickListener);
             } else {
-                return new EasyListView(activity, recyclerView, listItems, rowResID, onClickListener);
+                return new EasyListView(activity, recyclerView, listItems, customListTileList, rowResID, onClickListener);
             }
         }
-
-
     }
 
     public interface OnItemClickListener {

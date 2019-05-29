@@ -1,23 +1,25 @@
 package com.sayan.easylistview;
 
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.sayan.easylistwidget.ID;
 import com.sayan.easylistwidget.Layout;
 
-@Layout(R.layout.custom_recycler_child)
 public class CustomItemsPOJO {
-    @ID(R.id.titleTextView)
     private String name;
-    @ID(R.id.descriptionTextView)
     private String desc;
-    @ID(R.id.leadingImageView)
     private String image;
+    private String button;
 
-    public CustomItemsPOJO(String name, String desc, String image) {
+    public CustomItemsPOJO(String name, String desc, String image, String button) {
         this.name = name;
         this.desc = desc;
         this.image = image;
+        this.button = button;
     }
 
+    @ID(R.id.titleTextView)
     public String getName() {
         return name;
     }
@@ -26,6 +28,7 @@ public class CustomItemsPOJO {
         this.name = name;
     }
 
+    @ID(R.id.leadingImageView)
     public String getImage() {
         return image;
     }
@@ -34,11 +37,21 @@ public class CustomItemsPOJO {
         this.image = image;
     }
 
+    @ID(R.id.descriptionTextView)
     public String getDesc() {
         return desc;
     }
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    @ID(R.id.button)
+    public String getButton() {
+        return button;
+    }
+
+    public void setButton(String button) {
+        this.button = button;
     }
 }
