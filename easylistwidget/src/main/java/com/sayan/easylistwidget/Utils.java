@@ -1,9 +1,7 @@
 package com.sayan.easylistwidget;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -11,6 +9,9 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.lang.reflect.Field;
 
+/**
+ * This class contains different utility methods used in this module
+ */
 public class Utils {
     /**
      * Used for loading image views with image URLs
