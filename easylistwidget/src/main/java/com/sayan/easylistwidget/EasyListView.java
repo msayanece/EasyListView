@@ -19,7 +19,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class EasyListView {
 
@@ -36,10 +35,10 @@ public class EasyListView {
     /*
      * custom constructor of the Recycler view adapter
      */
-    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, int size, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener, OnBindViewHolderCalledListener onBindViewHolderCalledListener) {
+    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, int size, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener, OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         // set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, size, customListTileList, rowResID, onClickListener);
+        CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -183,6 +182,11 @@ public class EasyListView {
             return this;
         }
 
+        public Builder<T> setCount(int size) {
+            this.size = size;
+            return this;
+        }
+
         /**
          * Add the recycler view object from the activity layout
          * @param recyclerView the recycler view - container
@@ -206,11 +210,6 @@ public class EasyListView {
                 return new EasyListView(activity, recyclerView, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
             }
         }
-
-        public Builder<T> setCount(int size) {
-            this.size = size;
-            return this;
-        }
     }
 
     /**
@@ -227,6 +226,6 @@ public class EasyListView {
 
     public interface OnBindViewHolderCalledListener<T>{
         void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<T> viewHolder, T itemOnThatPosition, int position);
-        void onCustomBindViewHolder(@NonNull CustomRecyclerAdapter.CustomRecyclerViewHolder<T> viewHolder, int position);
+        void onCustomBindViewHolder(@NonNull CustomRecyclerAdapter.CustomRecyclerViewHolder<T> viewHolder, T itemOnThatPosition, int position);
     }
 }

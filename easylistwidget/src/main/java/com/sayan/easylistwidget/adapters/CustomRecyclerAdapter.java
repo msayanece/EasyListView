@@ -25,14 +25,16 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     private List<CustomListTile> customListTileList;
     private final int rowResID;
     private final EasyListView.OnItemClickListener onClickListener;
+    private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
 
-    public CustomRecyclerAdapter(Activity activity, List<T> items, int size, List<CustomListTile> customListTileList, int rowResID, EasyListView.OnItemClickListener onClickListener) {
+    public CustomRecyclerAdapter(Activity activity, List<T> items, int size, List<CustomListTile> customListTileList, int rowResID, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         this.activity = activity;
         this.items = items;
         this.size = size;
         this.customListTileList = customListTileList;
         this.rowResID = rowResID;
         this.onClickListener = onClickListener;
+        this.onBindViewHolderCalledListener = onBindViewHolderCalledListener;
     }
 
     @NonNull
@@ -46,8 +48,12 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof CustomRecyclerViewHolder) {
             try {
-                CustomRecyclerViewHolder<T> simpleTextViewHolder = (CustomRecyclerViewHolder<T>) viewHolder;
-                simpleTextViewHolder.setData(activity, items, customListTileList, onClickListener, position);
+                CustomRecyclerViewHolder<T> customRecyclerViewHolder = (CustomRecyclerViewHolder<T>) viewHolder;
+                if (onBindViewHolderCalledListener == null) {
+                    customRecyclerViewHolder.setData(activity, items, customListTileList, onClickListener, position);
+                }else {
+                    onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
+                }
             } catch (ClassCastException e) {
                 e.printStackTrace();
             }
