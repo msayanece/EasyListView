@@ -2,6 +2,7 @@ package com.sayan.easylistwidget;
 
 import android.app.Activity;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,17 +26,17 @@ public class EasyListView {
     /*
      * basic constructor of the Recycler view adapter
      */
-    private <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, ListTile listTile, OnItemClickListener onClickListener) {
+    private <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, ListTile listTile, OnItemClickListener onClickListener, OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         // set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        SimpleTextAdapter<T> adapter = new SimpleTextAdapter<T>(activity, listItems, listTile, onClickListener);
+        SimpleTextAdapter<T> adapter = new SimpleTextAdapter<T>(activity, listItems, listTile, onClickListener, onBindViewHolderCalledListener);
         recyclerView.setAdapter(adapter);
     }
 
     /*
      * custom constructor of the Recycler view adapter
      */
-    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener) {
+    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener, OnBindViewHolderCalledListener onBindViewHolderCalledListener) {
         // set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, customListTileList, rowResID, onClickListener);
@@ -82,6 +83,7 @@ public class EasyListView {
         private ListTile listTile;
         private List<CustomListTile> customListTileList;
         private int rowResID;
+        private OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
 
         /**
          * Builder Constructor with activity param
@@ -175,6 +177,11 @@ public class EasyListView {
             return this;
         }
 
+        public Builder<T> setOnBindViewHolderCalledListener(OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+            this.onBindViewHolderCalledListener = onBindViewHolderCalledListener;
+            return this;
+        }
+
         /**
          * Add the recycler view object from the activity layout
          * @param recyclerView the recycler view - container
@@ -192,10 +199,10 @@ public class EasyListView {
         public EasyListView Build() {
             if (rowResID == 0) {
                 //show basic recycler view
-                return new EasyListView(activity, recyclerView, listItems, listTile, onClickListener);
+                return new EasyListView(activity, recyclerView, listItems, listTile, onClickListener, onBindViewHolderCalledListener);
             } else {
                 //show custom recycler view
-                return new EasyListView(activity, recyclerView, listItems, customListTileList, rowResID, onClickListener);
+                return new EasyListView(activity, recyclerView, listItems, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
             }
         }
     }
@@ -212,4 +219,8 @@ public class EasyListView {
         void onClick(View view, int position);
     }
 
+    public interface OnBindViewHolderCalledListener<T>{
+        void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<T> viewHolder, T itemOnThatPosition, int position);
+        void onCustomBindViewHolder(@NonNull CustomRecyclerAdapter.CustomRecyclerViewHolder<T> viewHolder, int position);
+    }
 }

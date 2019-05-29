@@ -60,7 +60,7 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         return items.size();
     }
 
-    private static class CustomRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
+    public static class CustomRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
         CustomRecyclerViewHolder(Activity activity, View itemView, EasyListView.OnItemClickListener onClickListener) {
             super(itemView);
         }

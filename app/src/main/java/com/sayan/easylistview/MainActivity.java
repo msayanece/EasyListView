@@ -1,5 +1,6 @@
 package com.sayan.easylistview;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.sayan.easylistwidget.EasyListView;
+import com.sayan.easylistwidget.adapters.CustomRecyclerAdapter;
+import com.sayan.easylistwidget.adapters.SimpleTextAdapter;
 import com.sayan.easylistwidget.listtiles.ListTile;
 
 import java.util.ArrayList;
@@ -19,12 +22,12 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-//        List<ItemsPOJO> listItems = new ArrayList<>();
-//        addSimpleListItems(listItems);
-//        showBasicRecyclerView(recyclerView, listItems);
-        List<CustomItemsPOJO> listItems = new ArrayList<>();
-        addListItems(listItems);
-        showCustomRecyclerView(recyclerView, listItems, R.layout.custom_recycler_child);
+        List<ItemsPOJO> listItems = new ArrayList<>();
+        addSimpleListItems(listItems);
+        showBasicRecyclerView(recyclerView, listItems);
+//        List<CustomItemsPOJO> listItems = new ArrayList<>();
+//        addListItems(listItems);
+//        showCustomRecyclerView(recyclerView, listItems, R.layout.custom_recycler_child);
     }
 
     private void addSimpleListItems(List<ItemsPOJO> listItems) {
@@ -66,6 +69,17 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                     .addItemModel(ItemsPOJO.class)
                     .addRow(listTile)
                     .setOnItemClickListener(this)
+                    .setOnBindViewHolderCalledListener(new EasyListView.OnBindViewHolderCalledListener<ItemsPOJO>() {
+                        @Override
+                        public void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<ItemsPOJO> viewHolder, ItemsPOJO itemOnThatPosition, int position) {
+                            viewHolder.titleTextView.setText(itemOnThatPosition.getDesc());
+                        }
+
+                        @Override
+                        public void onCustomBindViewHolder(@NonNull CustomRecyclerAdapter.CustomRecyclerViewHolder<ItemsPOJO> viewHolder, int position) {
+                            //will not be called for basic view
+                        }
+                    })
                     .Build();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

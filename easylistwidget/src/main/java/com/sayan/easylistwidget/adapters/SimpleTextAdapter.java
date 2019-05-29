@@ -24,12 +24,14 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
     private final List<T> items;
     private ListTile listTile;
     private final EasyListView.OnItemClickListener onClickListener;
+    private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
 
-    public SimpleTextAdapter(Activity activity, List<T> items, ListTile listTile, EasyListView.OnItemClickListener onClickListener) {
+    public SimpleTextAdapter(Activity activity, List<T> items, ListTile listTile, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         this.activity = activity;
         this.items = items;
         this.listTile = listTile;
         this.onClickListener = onClickListener;
+        this.onBindViewHolderCalledListener = onBindViewHolderCalledListener;
     }
 
     @NonNull
@@ -44,7 +46,11 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
         if (viewHolder instanceof SimpleTextViewHolder) {
             try {
                 SimpleTextViewHolder<T> simpleTextViewHolder = (SimpleTextViewHolder<T>) viewHolder;
-                simpleTextViewHolder.setData(items, listTile, position);
+                if (onBindViewHolderCalledListener == null) {
+                    simpleTextViewHolder.setData(items, listTile, position);
+                }else {
+                    onBindViewHolderCalledListener.onBasicBindViewHolder(simpleTextViewHolder, items.get(position), position);
+                }
             } catch (ClassCastException e) {
                 e.printStackTrace();
             }
@@ -59,12 +65,12 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
         return items.size();
     }
 
-    private static class SimpleTextViewHolder<T> extends RecyclerView.ViewHolder {
-        private final ImageView trailingImageView;
+    public static class SimpleTextViewHolder<T> extends RecyclerView.ViewHolder {
+        public final ImageView trailingImageView;
         private Activity activity;
-        private final ImageView leadingImageView;
-        private final TextView titleTextView;
-        private final TextView descriptionTextView;
+        public final ImageView leadingImageView;
+        public final TextView titleTextView;
+        public final TextView descriptionTextView;
         private View itemView;
         private EasyListView.OnItemClickListener onClickListener;
 
