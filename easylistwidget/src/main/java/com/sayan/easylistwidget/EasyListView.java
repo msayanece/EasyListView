@@ -10,7 +10,6 @@ import android.view.View;
 import com.sayan.easylistwidget.adapters.CustomRecyclerAdapter;
 import com.sayan.easylistwidget.adapters.SimpleTextAdapter;
 import com.sayan.easylistwidget.annotations.ID;
-import com.sayan.easylistwidget.annotations.Layout;
 import com.sayan.easylistwidget.listtiles.CustomListTile;
 import com.sayan.easylistwidget.listtiles.ListTile;
 
@@ -92,10 +91,10 @@ public class EasyListView {
         }
         private List<CustomListTile> generateCustomListTileOfLayout(Class<T> itemsPOJOClass) {
             List<CustomListTile> customListTileList = new ArrayList<>();
-            if (itemsPOJOClass.isAnnotationPresent(Layout.class)) {
-                int layoutResID = Objects.requireNonNull(itemsPOJOClass.getAnnotation(Layout.class)).value();
-                Log.d("layout resource: ", "layout => " + layoutResID);
-            }
+//            if (itemsPOJOClass.isAnnotationPresent(Layout.class)) {
+//                int layoutResID = Objects.requireNonNull(itemsPOJOClass.getAnnotation(Layout.class)).value();
+//                Log.d("layout resource: ", "layout => " + layoutResID);
+//            }
             for (Method method : itemsPOJOClass.getDeclaredMethods()) {
                 method.setAccessible(true);
                 if (method.isAnnotationPresent(ID.class)) {
