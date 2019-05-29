@@ -26,20 +26,20 @@ public class EasyListView {
     /*
      * basic constructor of the Recycler view adapter
      */
-    private <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, ListTile listTile, OnItemClickListener onClickListener, OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+    private <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, int size, ListTile listTile, OnItemClickListener onClickListener, OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         // set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        SimpleTextAdapter<T> adapter = new SimpleTextAdapter<T>(activity, listItems, listTile, onClickListener, onBindViewHolderCalledListener);
+        SimpleTextAdapter<T> adapter = new SimpleTextAdapter<T>(activity, listItems, size, listTile, onClickListener, onBindViewHolderCalledListener);
         recyclerView.setAdapter(adapter);
     }
 
     /*
      * custom constructor of the Recycler view adapter
      */
-    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener, OnBindViewHolderCalledListener onBindViewHolderCalledListener) {
+    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, int size, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener, OnBindViewHolderCalledListener onBindViewHolderCalledListener) {
         // set up the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, customListTileList, rowResID, onClickListener);
+        CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, size, customListTileList, rowResID, onClickListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -84,6 +84,7 @@ public class EasyListView {
         private List<CustomListTile> customListTileList;
         private int rowResID;
         private OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
+        private int size = -1;
 
         /**
          * Builder Constructor with activity param
@@ -199,11 +200,16 @@ public class EasyListView {
         public EasyListView Build() {
             if (rowResID == 0) {
                 //show basic recycler view
-                return new EasyListView(activity, recyclerView, listItems, listTile, onClickListener, onBindViewHolderCalledListener);
+                return new EasyListView(activity, recyclerView, listItems, size, listTile, onClickListener, onBindViewHolderCalledListener);
             } else {
                 //show custom recycler view
-                return new EasyListView(activity, recyclerView, listItems, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
+                return new EasyListView(activity, recyclerView, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
             }
+        }
+
+        public Builder<T> setCount(int size) {
+            this.size = size;
+            return this;
         }
     }
 

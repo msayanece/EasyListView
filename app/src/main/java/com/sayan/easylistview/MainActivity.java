@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                     .addItemModel(ItemsPOJO.class)
                     .addRow(listTile)
                     .setOnItemClickListener(this)
+                    .setCount(listItems.size())
                     .setOnBindViewHolderCalledListener(new EasyListView.OnBindViewHolderCalledListener<ItemsPOJO>() {
                         @Override
                         public void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<ItemsPOJO> viewHolder, ItemsPOJO itemOnThatPosition, int position) {

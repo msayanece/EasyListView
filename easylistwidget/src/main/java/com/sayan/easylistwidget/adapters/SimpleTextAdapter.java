@@ -22,13 +22,15 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
 
     private Activity activity;
     private final List<T> items;
+    private int size;
     private ListTile listTile;
     private final EasyListView.OnItemClickListener onClickListener;
     private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
 
-    public SimpleTextAdapter(Activity activity, List<T> items, ListTile listTile, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+    public SimpleTextAdapter(Activity activity, List<T> items, int size, ListTile listTile, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         this.activity = activity;
         this.items = items;
+        this.size = size;
         this.listTile = listTile;
         this.onClickListener = onClickListener;
         this.onBindViewHolderCalledListener = onBindViewHolderCalledListener;
@@ -59,10 +61,12 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        if (items == null) {
-            return 0;
-        }
-        return items.size();
+        if (size == -1) {
+            if (items == null) {
+                return 0;
+            }
+            return items.size();
+        }else return size;
     }
 
     public static class SimpleTextViewHolder<T> extends RecyclerView.ViewHolder {

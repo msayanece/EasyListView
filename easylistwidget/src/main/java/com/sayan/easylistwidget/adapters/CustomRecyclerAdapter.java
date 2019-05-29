@@ -21,13 +21,15 @@ import java.util.List;
 public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Activity activity;
     private final List<T> items;
+    private int size;
     private List<CustomListTile> customListTileList;
     private final int rowResID;
     private final EasyListView.OnItemClickListener onClickListener;
 
-    public CustomRecyclerAdapter(Activity activity, List<T> items, List<CustomListTile> customListTileList, int rowResID, EasyListView.OnItemClickListener onClickListener) {
+    public CustomRecyclerAdapter(Activity activity, List<T> items, int size, List<CustomListTile> customListTileList, int rowResID, EasyListView.OnItemClickListener onClickListener) {
         this.activity = activity;
         this.items = items;
+        this.size = size;
         this.customListTileList = customListTileList;
         this.rowResID = rowResID;
         this.onClickListener = onClickListener;
@@ -54,10 +56,12 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        if (items == null) {
-            return 0;
-        }
-        return items.size();
+        if (size == -1) {
+            if (items == null) {
+                return 0;
+            }
+            return items.size();
+        }else return size;
     }
 
     public static class CustomRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
