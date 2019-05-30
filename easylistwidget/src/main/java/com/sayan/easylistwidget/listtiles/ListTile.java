@@ -24,6 +24,9 @@ public class ListTile<T> {
      * @param itemsPOJOClass the user given model.class
      */
     public ListTile(@NonNull Class<T> itemsPOJOClass) {
+        if (itemsPOJOClass == null) {
+            throw new IllegalArgumentException("itemsPOJOClass must not be null");
+        }
         this.itemsPOJOClass = itemsPOJOClass;
     }
 

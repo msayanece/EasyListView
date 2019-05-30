@@ -97,6 +97,13 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
         }
 
         void setData(List<T> items, ListTile listTile, final int position) {
+            if (listTile.getItemsPOJOClass() == null ){
+                throw new IllegalArgumentException("Item POJO class must not be null in ListTile");
+            }
+            if (listTile.getDescription() == null && listTile.getIcon() == null && listTile.getTitle() == null ){
+                throw new IllegalArgumentException("At least one of {title, description and icon} " +
+                        "must be set in ListTile to use the default behavior");
+            }
             if (listTile.getIcon() != null) {
                 String itemViewData = null;
                 try {

@@ -116,7 +116,7 @@ public class EasyListView {
         public Builder<T> addRow(@NonNull ListTile<T> listTile) throws IllegalStateException{
             if (rowResID != 0) throw new IllegalStateException("Row Already set!");
             if (listTile == null){
-                throw new IllegalArgumentException("ListTile object must not be null");
+                throw new NullPointerException("ListTile object must not be null");
             }
             if (listTile.getItemsPOJOClass() == null){
                 throw new IllegalArgumentException("POJOClass must be specified in the ListTile");
@@ -147,7 +147,7 @@ public class EasyListView {
          */
         public Builder<T> addListItems(@NonNull List<T> listItems) {
             if (listItems == null){
-                throw new IllegalArgumentException("listItems must not be null");
+                throw new NullPointerException("listItems must not be null");
             }
             this.listItems = listItems;
             return this;
@@ -161,7 +161,7 @@ public class EasyListView {
          */
         public Builder<T> addItemModel(@EasyListViewWarning("Should not be null") @NonNull Class<T> itemsPOJOClass) {
             if (itemsPOJOClass == null){
-                throw new IllegalArgumentException("ItemsPOJOClass must not be null");
+                throw new NullPointerException("ItemsPOJOClass must not be null");
             }
             this.itemsPOJOClass = itemsPOJOClass;
             customListTileList = generateCustomListTileOfLayout(itemsPOJOClass);
@@ -262,7 +262,7 @@ public class EasyListView {
          */
         public Builder<T> addRecyclerView(@NonNull RecyclerView recyclerView) {
             if (recyclerView == null){
-                throw new IllegalArgumentException("RecyclerView must not be null");
+                throw new NullPointerException("RecyclerView must not be null");
             }
             this.recyclerView = recyclerView;
             return this;
@@ -275,14 +275,38 @@ public class EasyListView {
         public EasyListView build() {
             if (rowResID == 0) {
                 //show basic recycler view
-                if (listTile == null){
-                    throw new InvalidSetupException("Row template must be set using addRow() method");
-                }
+                checkValidation(activity, recyclerView, listItems, size, listTile, onClickListener, onBindViewHolderCalledListener);
                 return new EasyListView(activity, recyclerView, listItems, size, listTile, onClickListener, onBindViewHolderCalledListener);
             } else {
                 //show custom recycler view
                 checkValidation(activity, recyclerView, itemsPOJOClass, layoutManager, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
                 return new EasyListView(activity, recyclerView, layoutManager, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
+            }
+        }
+
+        private void checkValidation(
+                Activity activity,
+                RecyclerView recyclerView,
+                List<T> listItems,
+                int size,
+                ListTile listTile,
+                OnItemClickListener onClickListener,
+                OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+            if (activity == null){
+                throw new InvalidSetupException("Activity object is required, must not be null");
+            }
+            if (recyclerView == null){
+                throw new InvalidSetupException("RecyclerView object is required, must not be null");
+            }
+            if (listItems == null){
+                throw new InvalidSetupException("Item list must not be null");
+            }
+            if (itemsPOJOClass == null){
+                throw new InvalidSetupException("the .class of the POJO or Model must be set");
+            }
+            if (listTile == null && onBindViewHolderCalledListener == null){
+                throw new InvalidSetupException("Row template must be set using addRow() method or " +
+                        "add onBindViewHolderCalledListener for using your own logic to the default layout");
             }
         }
 
