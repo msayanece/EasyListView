@@ -3,7 +3,7 @@
 Get rid of the old Recycler View with adapter and have fun showing list of views easily with EasyListView just like Flutter.
 Use the very easy builder pattern for setting up your list with only 8 to 10 lines of code.
 
-![](/list.gif?s=200)<img src="https://github.com/msayanece/EasyListView/blob/master/list.gif" width="300" height="700"> 
+<img src="https://github.com/msayanece/EasyListView/blob/master/list.gif" width="300" height="520"> 
 
 
 
@@ -13,8 +13,8 @@ Use the very easy builder pattern for setting up your list with only 8 to 10 lin
 ## Prerequisites
 
 1. Android Studio (Gradle build system)*
-2. Git installed*
-3. A Printer - Not mandatory (If you do not have a printer, thats ok. You can always see the output as the default android option SAVE AS PDF.)
+2. A project where you want to add a list of views like RecyclerView
+3. 
 
 
 ## Installing
