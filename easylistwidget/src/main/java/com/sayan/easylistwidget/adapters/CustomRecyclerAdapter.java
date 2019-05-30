@@ -52,6 +52,23 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 if (onBindViewHolderCalledListener == null) {
                     customRecyclerViewHolder.setData(activity, items, customListTileList, onClickListener, position);
                 }else {
+                    final int finalPosition = position;
+                    for (CustomListTile customListTile :
+                            customListTileList) {
+                        View view = customRecyclerViewHolder.itemView.findViewById(customListTile.getViewResID());
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                onClickListener.onClick(v, finalPosition);
+                            }
+                        });
+                    }
+                    customRecyclerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onClickListener.onClick(v, finalPosition);
+                        }
+                    });
                     onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
                 }
             } catch (ClassCastException e) {
