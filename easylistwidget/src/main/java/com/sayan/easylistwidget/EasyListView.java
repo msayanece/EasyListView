@@ -2,7 +2,9 @@ package com.sayan.easylistwidget;
 
 import android.app.Activity;
 import android.support.annotation.IntDef;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +12,10 @@ import android.view.View;
 
 import com.sayan.easylistwidget.adapters.CustomRecyclerAdapter;
 import com.sayan.easylistwidget.adapters.SimpleTextAdapter;
+import com.sayan.easylistwidget.annotations.EasyListViewWarning;
 import com.sayan.easylistwidget.annotations.ID;
+import com.sayan.easylistwidget.exceptions.IllegalModelFoundException;
+import com.sayan.easylistwidget.exceptions.InvalidSetupException;
 import com.sayan.easylistwidget.listtiles.CustomListTile;
 import com.sayan.easylistwidget.listtiles.ListTile;
 
@@ -72,7 +77,7 @@ public class EasyListView {
      *                     .addItemModel(ItemsPOJO.class)
      *                     .addRow(listTile)
      *                     .setOnItemClickListener(this)
-     *                     .Build();
+     *                     .build();
      *                     </pre>
      * @param <T> The user given POJO or Model Type
      */
@@ -95,6 +100,9 @@ public class EasyListView {
          * @param activity the activity which is the container of the recycler view
          */
         public Builder(Activity activity) {
+            if (activity == null){
+                throw new IllegalArgumentException("Activity object must not be null");
+            }
             this.activity = activity;
         }
 
@@ -105,8 +113,14 @@ public class EasyListView {
          * @return the Builder class object itself
          * @throws IllegalStateException when one row template is already set
          */
-        public Builder<T> addRow(ListTile<T> listTile) throws IllegalStateException{
+        public Builder<T> addRow(@NonNull ListTile<T> listTile) throws IllegalStateException{
             if (rowResID != 0) throw new IllegalStateException("Row Already set!");
+            if (listTile == null){
+                throw new IllegalArgumentException("ListTile object must not be null");
+            }
+            if (listTile.getItemsPOJOClass() == null){
+                throw new IllegalArgumentException("POJOClass must be specified in the ListTile");
+            }
             this.listTile = listTile;
             return this;
         }
@@ -120,7 +134,7 @@ public class EasyListView {
          * @return the Builder class object itself
          * @throws IllegalStateException when one row template is already set
          */
-        public Builder<T> addRow(int childResId) throws IllegalStateException {
+        public Builder<T> addRow(@LayoutRes int childResId) throws IllegalStateException {
             if (listTile != null) throw new IllegalStateException("Row Already set!");
             rowResID = childResId;
             return this;
@@ -131,7 +145,10 @@ public class EasyListView {
          * @param listItems the list of items
          * @return the Builder class object itself
          */
-        public Builder<T> addListItems(List<T> listItems) {
+        public Builder<T> addListItems(@NonNull List<T> listItems) {
+            if (listItems == null){
+                throw new IllegalArgumentException("listItems must not be null");
+            }
             this.listItems = listItems;
             return this;
         }
@@ -142,7 +159,10 @@ public class EasyListView {
          * @param itemsPOJOClass the user given Model.class
          * @return the Builder class object itself
          */
-        public Builder<T> addItemModel(Class<T> itemsPOJOClass) {
+        public Builder<T> addItemModel(@EasyListViewWarning("Should not be null") @NonNull Class<T> itemsPOJOClass) {
+            if (itemsPOJOClass == null){
+                throw new IllegalArgumentException("ItemsPOJOClass must not be null");
+            }
             this.itemsPOJOClass = itemsPOJOClass;
             customListTileList = generateCustomListTileOfLayout(itemsPOJOClass);
             return this;
@@ -153,7 +173,7 @@ public class EasyListView {
          * @param layoutManager the layout manager
          * @return the Builder class object itself
          */
-        public Builder<T> addLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        public Builder<T> addLayoutManager(@NonNull RecyclerView.LayoutManager layoutManager) {
             this.layoutManager = layoutManager;
             return this;
         }
@@ -164,11 +184,15 @@ public class EasyListView {
          * @return the list of CustomListTile
          */
         private List<CustomListTile> generateCustomListTileOfLayout(Class<T> itemsPOJOClass) {
+            if (itemsPOJOClass.getDeclaredMethods().length == 0){
+                throw new IllegalModelFoundException();
+            }
             List<CustomListTile> customListTileList = new ArrayList<>();
 //            if (itemsPOJOClass.isAnnotationPresent(Layout.class)) {
 //                int layoutResID = Objects.requireNonNull(itemsPOJOClass.getAnnotation(Layout.class)).value();
 //                Log.d("layout resource: ", "layout => " + layoutResID);
 //            }
+            int count = 0;
             for (Method method : itemsPOJOClass.getDeclaredMethods()) {
                 method.setAccessible(true);
                 if (method.isAnnotationPresent(ID.class)) {
@@ -176,7 +200,11 @@ public class EasyListView {
                     CustomListTile customListTile = new CustomListTile(method, viewResID);
                     customListTileList.add(customListTile);
                     Log.d("layout resource: ", method.getName() + " => " + viewResID);
+                    count++;
                 }
+            }
+            if (count == 0){
+//                    throw new IllegalArgumentException("ItemsPOJOClass must not be null");
             }
             return customListTileList;
         }
@@ -187,7 +215,7 @@ public class EasyListView {
          * @see OnItemClickListener
          * @return the Builder class object itself
          */
-        public Builder<T> setOnItemClickListener(OnItemClickListener onClickListener) {
+        public Builder<T> setOnItemClickListener(@Nullable OnItemClickListener onClickListener) {
             this.onClickListener = onClickListener;
             return this;
         }
@@ -209,7 +237,7 @@ public class EasyListView {
          * @see OnBindViewHolderCalledListener
          * @return the Builder class object itself
          */
-        public Builder<T> setOnBindViewHolderCalledListener(OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+        public Builder<T> setOnBindViewHolderCalledListener(@Nullable OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
             this.onBindViewHolderCalledListener = onBindViewHolderCalledListener;
             return this;
         }
@@ -220,6 +248,9 @@ public class EasyListView {
          * @return the Builder class object itself
          */
         public Builder<T> setCount(int count) {
+            if (count <0){
+                throw new IllegalArgumentException("count must not be negative");
+            }
             this.size = count;
             return this;
         }
@@ -229,7 +260,10 @@ public class EasyListView {
          * @param recyclerView the recycler view - container
          * @return the Builder class object itself
          */
-        public Builder<T> addRecyclerView(RecyclerView recyclerView) {
+        public Builder<T> addRecyclerView(@NonNull RecyclerView recyclerView) {
+            if (recyclerView == null){
+                throw new IllegalArgumentException("RecyclerView must not be null");
+            }
             this.recyclerView = recyclerView;
             return this;
         }
@@ -238,13 +272,43 @@ public class EasyListView {
          * Builds the object of EasyListView and creates the adapter and shows according to the setup
          * @return the object of EasyListView
          */
-        public EasyListView Build() {
+        public EasyListView build() {
             if (rowResID == 0) {
                 //show basic recycler view
+                if (listTile == null){
+                    throw new InvalidSetupException("Row template must be set using addRow() method");
+                }
                 return new EasyListView(activity, recyclerView, listItems, size, listTile, onClickListener, onBindViewHolderCalledListener);
             } else {
                 //show custom recycler view
+                checkValidation(activity, recyclerView, itemsPOJOClass, layoutManager, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
                 return new EasyListView(activity, recyclerView, layoutManager, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
+            }
+        }
+
+        private void checkValidation(Activity activity,
+                                     RecyclerView recyclerView,
+                                     Class<T> itemsPOJOClass,
+                                     RecyclerView.LayoutManager layoutManager,
+                                     List<T> listItems,
+                                     int size,
+                                     List<CustomListTile> customListTileList,
+                                     int rowResID, OnItemClickListener onClickListener,
+                                     OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+            if (activity == null){
+                throw new InvalidSetupException("Activity object is required, must not be null");
+            }
+            if (recyclerView == null){
+                throw new InvalidSetupException("RecyclerView object is required, must not be null");
+            }
+            if (listItems == null){
+                throw new InvalidSetupException("Item list must not be null");
+            }
+            if (itemsPOJOClass == null){
+                throw new InvalidSetupException("the .class of the POJO or Model must be set");
+            }
+            if (customListTileList == null){
+                throw new InvalidSetupException("Row template must be set. pass your custom layout resID using addRow() method");
             }
         }
     }

@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                             //will not be called for basic view
                         }
                     })
-                    .Build();
+                    .build();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                         ((TextView)viewHolder.itemView.findViewById(R.id.descriptionTextView)).setText(itemOnThatPosition.getName());
                     }
                 })                                                      //optional
-                .Build();
+                .build();
     }
 
     @Override
