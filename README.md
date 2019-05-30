@@ -1,9 +1,9 @@
-<img width="760" src="https://raw.githubusercontent.com/Microsoft/vscode-iot-workbench/master/gif/new.gif"> # EasyListView
+# EasyListView
 
 Get rid of the old Recycler View with adapter and have fun showing list of views easily with EasyListView just like Flutter.
 Use the very easy builder pattern for setting up your list with only 8 to 10 lines of code.
 
-![](/list.gif?s=200)<img width="300" src="https://github.com/msayanece/EasyListView/blob/master/list.gif"> 
+![](/list.gif?s=200)<img src="https://github.com/msayanece/EasyListView/blob/master/list.gif" width="300" height="700"> 
 
 
 
