@@ -35,9 +35,13 @@ public class EasyListView {
     /*
      * custom constructor of the Recycler view adapter
      */
-    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, List<T> listItems, int size, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener, OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+    private  <T> EasyListView(Activity activity, RecyclerView recyclerView, RecyclerView.LayoutManager layoutManager, List<T> listItems, int size, List<CustomListTile> customListTileList, int rowResID, OnItemClickListener onClickListener, OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         // set up the RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        if (layoutManager == null){
+            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        }else {
+            recyclerView.setLayoutManager(layoutManager);
+        }
         CustomRecyclerAdapter<T> adapter = new CustomRecyclerAdapter<T>(activity, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
         recyclerView.setAdapter(adapter);
     }
@@ -84,6 +88,7 @@ public class EasyListView {
         private int rowResID;
         private OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
         private int size = -1;
+        private RecyclerView.LayoutManager layoutManager;
 
         /**
          * Builder Constructor with activity param
@@ -140,6 +145,16 @@ public class EasyListView {
         public Builder<T> addItemModel(Class<T> itemsPOJOClass) {
             this.itemsPOJOClass = itemsPOJOClass;
             customListTileList = generateCustomListTileOfLayout(itemsPOJOClass);
+            return this;
+        }
+
+        /**
+         * add the layout manager to the recycler view, if not set, the vertical linear layout manager will be used
+         * @param layoutManager the layout manager
+         * @return the Builder class object itself
+         */
+        public Builder<T> addLayoutManager(RecyclerView.LayoutManager layoutManager) {
+            this.layoutManager = layoutManager;
             return this;
         }
 
@@ -229,7 +244,7 @@ public class EasyListView {
                 return new EasyListView(activity, recyclerView, listItems, size, listTile, onClickListener, onBindViewHolderCalledListener);
             } else {
                 //show custom recycler view
-                return new EasyListView(activity, recyclerView, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
+                return new EasyListView(activity, recyclerView, layoutManager, listItems, size, customListTileList, rowResID, onClickListener, onBindViewHolderCalledListener);
             }
         }
     }

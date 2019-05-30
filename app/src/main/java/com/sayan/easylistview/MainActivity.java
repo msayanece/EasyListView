@@ -3,6 +3,7 @@ package com.sayan.easylistview;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -93,10 +94,11 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
         new EasyListView.Builder<CustomItemsPOJO>(this)
                 .addRecyclerView(recyclerView)
                 .addListItems(listItems)
+                .addLayoutManager(new LinearLayoutManager(this)) //optional
                 .addItemModel(CustomItemsPOJO.class)
                 .addRow(childResId)
-                .setCount(4)
-                .setOnItemClickListener(this)
+                .setCount(4)                                            //optional
+                .setOnItemClickListener(this)                           //optional
                 .setOnBindViewHolderCalledListener(new EasyListView.OnBindViewHolderCalledListener<CustomItemsPOJO>() {
                     @Override
                     public void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<CustomItemsPOJO> viewHolder, CustomItemsPOJO itemOnThatPosition, int position) {
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                     public void onCustomBindViewHolder(@NonNull CustomRecyclerAdapter.CustomRecyclerViewHolder<CustomItemsPOJO> viewHolder, CustomItemsPOJO itemOnThatPosition, int position) {
                         ((TextView)viewHolder.itemView.findViewById(R.id.descriptionTextView)).setText(itemOnThatPosition.getName());
                     }
-                })
+                })                                                      //optional
                 .Build();
     }
 
