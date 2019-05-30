@@ -3,7 +3,7 @@
 Get rid of the old Recycler View with adapter and have fun showing list of views easily with EasyListView just like Flutter.
 Use the very easy builder pattern for setting up your list with only 8 to 10 lines of code.
 
-![Alt text](/blob/master/list.webm?raw=true "Optional Title")
+![Alt text](/list.webm?raw=true "Optional Title")
 
 
 
