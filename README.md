@@ -14,10 +14,11 @@ Use the very easy builder pattern for setting up your list with only 8 to 10 lin
 
 1. Android Studio (Gradle build system)*
 2. A project where you want to add a list of views like RecyclerView
-3. 
 
 
-## Installing
+## Contributing
+
+### Installing
 
 1. Fork this repository to your github profile (On the Top-Right corner).
 2. Copy the URL of your repository on your profile from your browser.
@@ -31,17 +32,16 @@ Use the very easy builder pattern for setting up your list with only 8 to 10 lin
 And You are done.
 
 
-## Running the tests
+### Running the tests
 
 After gradle build finished, you can run it on your Emulator or real device by clicking on the green triangular buuton on the top.
 
 
-## Built With
+### Built With
 
 Gradle
 
-
-## Contributing
+### Contribute to this project
 
 You are welcome to contribute to this repository. For Contribute to this repository follow this process...
 
@@ -60,9 +60,8 @@ See also the list of contributors who participated in this project.
 ## License
 
 This project is free and open source to use in any project if you want.
-See for more information in licence.md file in this repository
 
 
 ## Acknowledgments
 
-This Project is based on ![zxing Library (("Zebra Crossing")](https://github.com/zxing/zxing)
+This Project is based on The RecyclerView of Android. Other concepts of Java like Annotations, Java Reflection API and Google's Glide library has been used in this project.
