@@ -16,6 +16,85 @@ Use the very easy builder pattern for setting up your list with only 8 to 10 lin
 2. A project where you want to add a list of views like RecyclerView
 
 
+## Quick Setup
+
+### 1. Include library
+
+**In App Gradle File**
+
+``` gradle
+dependencies {
+    implementation 'com.github.msayanece:EasyListView:0.0.4'
+}
+```
+**In Project Gradle File**
+``` project gradle
+allprojects {
+    repositories {
+       ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+### What's New
+
+See the project's Releases page for a list of versions with their change logs.
+
+### [View Releases](https://github.com/vipulasri/Timeline-View/releases)
+
+If you Watch this repository, GitHub will send you an email every time I publish an update.
+
+### 2. Basic Usage
+
+ * In your Activity or Fragment : Where you have added the RecyclerView in your layout and get the RecyclerView object of your layout in your Java or Kotlin file and pass it to the SDK.
+ 
+ * Create a ListTile object
+
+``` java
+        ListTile<ItemsPOJO> listTile = new ListTile<ItemsPOJO>(ItemsPOJO.class)
+                    .addTitle("getName")        //Argument-> method name of the Model to be mapped
+                    .addDescription("getDesc")  //Argument-> method name of the Model to be mapped
+                    .addIcon(EasyListView.IconPosition.LEADING, "getImage");
+                                                ////Argument->LEADING or TRAILING and method name of the Model to be mapped
+```
+
+ * Create a ListTile object
+
+``` java
+        new EasyListView.Builder<ItemsPOJO>(this)
+                    .addRecyclerView(recyclerView)            // Pass your RecyclerView
+                    .addListItems(listItems)                  // The List of items to display
+                    .addItemModel(ItemsPOJO.class)            // The Item Model.class
+                    .addRow(listTile)                         // Add the ListTile object you have just created
+                    .setCount(5)                              // Optional set item count
+                    .setOnItemClickListener(this)             // Optional set on click listener
+                    .setOnBindViewHolderCalledListener(this)  // Optional set on bind view holder to write your own logic
+                    .Build();
+```
+
+
+### 2. Custom Usage
+
+ * In your Activity or Fragment : Where you have added the RecyclerView in your layout and get the RecyclerView object of your layout in your Java or Kotlin file and pass it to the SDK.
+ 
+ * Create a ListTile object
+
+``` java
+        new EasyListView.Builder<CustomItemsPOJO>(this)
+                .addRecyclerView(recyclerView)
+                .addListItems(listItems)
+                .addItemModel(CustomItemsPOJO.class)
+                .setCount(5)                                        
+                .addLayoutManager(new LinearLayoutManager(this))    //Optional, The SDK will use this layout manager only for the custom setup
+                .addRow(childResId)                                         // The custom layout of Recycler child 
+                .setOnItemClickListener(this)                               //Optional
+                .setOnBindViewHolderCalledListener(this)  //Optional, if you want to execute your own logic
+                .Build();
+```
+
+##### Line Padding around marker
+
 ## Contributing
 
 ### Installing
