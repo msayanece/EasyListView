@@ -23,6 +23,7 @@ Use the very easy builder pattern for setting up your list with only 8 to 10 lin
 
 ``` gradle
 dependencies {
+    ...
     implementation 'com.github.msayanece:EasyListView:0.0.4'
 }
 ```
@@ -40,7 +41,7 @@ allprojects {
 
 See the project's Releases page for a list of versions with their change logs.
 
-### [View Releases](https://github.com/vipulasri/Timeline-View/releases)
+### [View Releases](https://github.com/msayanece/EasyListView/releases)
 
 If you Watch this repository, GitHub will send you an email every time I publish an update.
 
