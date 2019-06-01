@@ -74,7 +74,7 @@ If you Watch this repository, GitHub will send you an email every time I publish
 ```
 
 
-### 2. Custom Usage
+### 3. Custom Usage
 
  * In your Activity or Fragment : Where you have added the RecyclerView in your layout and get the RecyclerView object of your layout in your Java or Kotlin file and pass it to the SDK.
  
