@@ -160,9 +160,6 @@ public class TestPOJO {
                     }
 ```
 
-
-##### Line Padding around marker
-
 ## Contributing
 
 ### Installing
