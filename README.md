@@ -49,7 +49,7 @@ If you Watch this repository, GitHub will send you an email every time I publish
 
  * In your Activity or Fragment : Where you have added the RecyclerView in your layout and get the RecyclerView object of your layout in your Java or Kotlin file and pass it to the SDK.
  
- * Create a ListTile object
+ * Create a ListTile object to map the getter methods of the model
 
 ``` java
         ListTile<ItemsPOJO> listTile = new ListTile<ItemsPOJO>(ItemsPOJO.class)
@@ -59,7 +59,7 @@ If you Watch this repository, GitHub will send you an email every time I publish
                                                 ////Argument->LEADING or TRAILING and method name of the Model to be mapped
 ```
 
- * Create a ListTile object
+ * Build the EasyListView with your ListTile object.
 
 ``` java
         new EasyListView.Builder<ItemsPOJO>(this)
@@ -78,20 +78,88 @@ If you Watch this repository, GitHub will send you an email every time I publish
 
  * In your Activity or Fragment : Where you have added the RecyclerView in your layout and get the RecyclerView object of your layout in your Java or Kotlin file and pass it to the SDK.
  
- * Create a ListTile object
+ 
+ * Create your custom layout for the row template.
+
+``` xml
+        <?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="asd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+        
+</android.support.constraint.ConstraintLayout>
+```
+
+* Create the model class and annotate with `@ID(viewResID)` to the corresponding `getter` method for setting model data automatically without any logic, when the list loads.
+
+**You can _skip this step_, if you are going to write your _own logic_ inside the _onBindViewHolderListener_ using the _setOnBindViewHolderCalledListener() method._**
+
+``` java
+public class TestPOJO {
+    private String text;
+
+    public TestPOJO(String text) {
+        this.text = text;
+    }
+
+    @ID(R.id.textView)
+    public String getText() {
+        return text;
+    }
+}
+```
+
+ 
+ * Build the EasyListView with your own custom objects.
 
 ``` java
         new EasyListView.Builder<CustomItemsPOJO>(this)
-                .addRecyclerView(recyclerView)
-                .addListItems(listItems)
-                .addItemModel(CustomItemsPOJO.class)
-                .setCount(5)                                        
+                .addRecyclerView(recyclerView)                      //Mandatory, the RecyclerView object
+                .addListItems(listItems)                            //Mandatory, the list of Items (Models)
+                .addItemModel(CustomItemsPOJO.class)                //Mandatory, the Model .class
+                .setCount(5)                                        //Optional, set count of items in the list             
                 .addLayoutManager(new LinearLayoutManager(this))    //Optional, The SDK will use this layout manager only for the custom setup
-                .addRow(childResId)                                         // The custom layout of Recycler child 
-                .setOnItemClickListener(this)                               //Optional
-                .setOnBindViewHolderCalledListener(this)  //Optional, if you want to execute your own logic
+                .addRow(R.layout.child_layout)                      // The custom layout of Recycler child 
+                .setOnItemClickListener(this)                       //Optional
+                .setOnBindViewHolderCalledListener(this)            //Optional, if you want to execute your own logic
                 .Build();
 ```
+
+ * If you want you may write your own logic inside the callback methods of the OnBindViewHolderCalledListener.
+
+``` java
+        new EasyListView.OnBindViewHolderCalledListener<ItemsPOJO>() {
+                        @Override
+                        public void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<ItemsPOJO> viewHolder, ItemsPOJO itemOnThatPosition, int position) {
+                            //not called for custom setup
+                            //your Logic here
+                        }
+
+                        @Override
+                        public void onCustomBindViewHolder(@NonNull CustomRecyclerAdapter.CustomRecyclerViewHolder<ItemsPOJO> viewHolder, ItemsPOJO itemOnThatPosition, int position) {
+                            //not called for basic setup
+                            //your Logic here
+                        }
+                    }
+```
+
 
 ##### Line Padding around marker
 
