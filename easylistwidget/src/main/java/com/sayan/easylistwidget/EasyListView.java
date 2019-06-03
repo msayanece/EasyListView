@@ -308,6 +308,9 @@ public class EasyListView {
                 throw new InvalidSetupException("Row template must be set using addRow() method or " +
                         "add onBindViewHolderCalledListener for using your own logic to the default layout");
             }
+            if (size > listItems.size()){
+                throw new InvalidSetupException("check your setCount() method logic, item count must not be greater than the item list size");
+            }
         }
 
         private void checkValidation(Activity activity,
@@ -333,6 +336,9 @@ public class EasyListView {
             }
             if (customListTileList == null){
                 throw new InvalidSetupException("Row template must be set. pass your custom layout resID using addRow() method");
+            }
+            if (size > customListTileList.size()){
+                throw new InvalidSetupException("check your setCount() method logic, item count must not be greater than the item list size");
             }
         }
     }
