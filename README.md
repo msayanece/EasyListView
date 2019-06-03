@@ -71,7 +71,7 @@ If you Watch this repository, GitHub will send you an email every time I publish
                     .addListItems(listItems)                  // The List of items to display
                     .addItemModel(ItemsPOJO.class)            // The Item Model.class
                     .addRow(listTile)                         // Add the ListTile object you have just created
-                    .setCount(5)                              // Optional set item count
+                    .setCount(listItems.size())               // Optional set item count
                     .setOnItemClickListener(this)             // Optional set on click listener
                     .setOnBindViewHolderCalledListener(this)  // Optional set on bind view holder to write your own logic
                     .Build();
@@ -138,7 +138,7 @@ public class TestPOJO {
                 .addRecyclerView(recyclerView)                      //Mandatory, the RecyclerView object
                 .addListItems(listItems)                            //Mandatory, the list of Items (Models)
                 .addItemModel(CustomItemsPOJO.class)                //Mandatory, the Model .class
-                .setCount(5)                                        //Optional, set count of items in the list             
+                .setCount(listItems.size())                         //Optional, set count of items in the list             
                 .addLayoutManager(new LinearLayoutManager(this))    //Optional, The SDK will use this layout manager only for the custom setup
                 .addRow(R.layout.child_layout)                      // The custom layout of Recycler child 
                 .setOnItemClickListener(this)                       //Optional
