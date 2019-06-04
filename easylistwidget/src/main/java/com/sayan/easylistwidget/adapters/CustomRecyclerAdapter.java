@@ -65,7 +65,9 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 customRecyclerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onClickListener.onClick(v, finalPosition);
+                        if (onClickListener != null) {
+                            onClickListener.onClick(v, finalPosition);
+                        }
                     }
                 });
                 onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);

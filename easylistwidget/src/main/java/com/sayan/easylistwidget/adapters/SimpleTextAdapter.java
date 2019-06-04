@@ -54,7 +54,9 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
                 simpleTextViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onClickListener.onClick(v, finalPosition);
+                        if (onClickListener != null) {
+                            onClickListener.onClick(v, finalPosition);
+                        }
                     }
                 });
                 onBindViewHolderCalledListener.onBasicBindViewHolder(simpleTextViewHolder, items.get(position), position);
