@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        List<ItemsPOJO> listItems = new ArrayList<>();
-        addSimpleListItems(listItems);
-        showBasicRecyclerView(recyclerView, listItems);
-//        List<CustomItemsPOJO> listItems = new ArrayList<>();
-//        addListItems(listItems);
-//        showCustomRecyclerView(recyclerView, listItems, R.layout.custom_recycler_child);
+//        List<ItemsPOJO> listItems = new ArrayList<>();
+//        addSimpleListItems(listItems);
+//        showBasicRecyclerView(recyclerView, listItems);
+        List<CustomItemsPOJO> listItems = new ArrayList<>();
+        addListItems(listItems);
+        showCustomRecyclerView(recyclerView, listItems, R.layout.custom_recycler_child);
     }
 
     private void addSimpleListItems(List<ItemsPOJO> listItems) {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                 .addLayoutManager(new LinearLayoutManager(this)) //optional
                 .addItemModel(CustomItemsPOJO.class)
                 .addRow(childResId)
-                .setCount(4)                                            //optional
+                .setCount(40)                                            //optional
                 .setOnItemClickListener(this)                           //optional
                 .setOnBindViewHolderCalledListener(new EasyListView.OnBindViewHolderCalledListener<CustomItemsPOJO>() {
                     @Override
