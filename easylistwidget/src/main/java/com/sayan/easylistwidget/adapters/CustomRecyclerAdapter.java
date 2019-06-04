@@ -47,33 +47,30 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof CustomRecyclerViewHolder) {
-            try {
-                CustomRecyclerViewHolder<T> customRecyclerViewHolder = (CustomRecyclerViewHolder<T>) viewHolder;
-                if (onBindViewHolderCalledListener == null) {
-                    customRecyclerViewHolder.setData(activity, items, customListTileList, onClickListener, position);
-                }else {
-                    final int finalPosition = position;
-                    for (CustomListTile customListTile :
-                            customListTileList) {
-                        View view = customRecyclerViewHolder.itemView.findViewById(customListTile.getViewResID());
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onClickListener.onClick(v, finalPosition);
-                            }
-                        });
-                    }
-                    customRecyclerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            CustomRecyclerViewHolder<T> customRecyclerViewHolder = (CustomRecyclerViewHolder<T>) viewHolder;
+            if (onBindViewHolderCalledListener == null) {
+                customRecyclerViewHolder.setData(activity, items, customListTileList, onClickListener, position);
+            } else {
+                final int finalPosition = position;
+                for (CustomListTile customListTile :
+                        customListTileList) {
+                    View view = customRecyclerViewHolder.itemView.findViewById(customListTile.getViewResID());
+                    view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             onClickListener.onClick(v, finalPosition);
                         }
                     });
-                    onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
                 }
-            } catch (ClassCastException e) {
-                e.printStackTrace();
+                customRecyclerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickListener.onClick(v, finalPosition);
+                    }
+                });
+                onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
             }
+
         }
     }
 
@@ -84,7 +81,7 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 return 0;
             }
             return items.size();
-        }else return size;
+        } else return size;
     }
 
     public static class CustomRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
@@ -125,11 +122,11 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 return;
             }
             if (view instanceof ImageView) {
-                if (viewGetterMethod.getReturnType().isInstance("")){
+                if (viewGetterMethod.getReturnType().isInstance("")) {
                     Utils.loadImageDirectlyWithSize(activity, (String) viewGetterMethod.invoke(item), ((ImageView) view), 150, 150);
-                }else if (viewGetterMethod.getReturnType().isInstance(1)){
+                } else if (viewGetterMethod.getReturnType().isInstance(1)) {
                     ((ImageView) view).setImageDrawable(activity.getResources().getDrawable((int) viewGetterMethod.invoke(item)));
-                }else if (viewGetterMethod.getReturnType().isInstance(Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888))){
+                } else if (viewGetterMethod.getReturnType().isInstance(Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888))) {
                     ((ImageView) view).setImageBitmap((Bitmap) viewGetterMethod.invoke(item));
                 }
                 return;
