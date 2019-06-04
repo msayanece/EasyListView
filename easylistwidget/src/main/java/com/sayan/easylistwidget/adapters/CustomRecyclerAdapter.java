@@ -3,6 +3,7 @@ package com.sayan.easylistwidget.adapters;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +25,8 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     private int size;
     private List<CustomListTile> customListTileList;
     private final int rowResID;
-    private final EasyListView.OnItemClickListener onClickListener;
-    private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
+    @Nullable private final EasyListView.OnItemClickListener onClickListener;
+    @Nullable private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
 
     public CustomRecyclerAdapter(Activity activity, List<T> items, int size, List<CustomListTile> customListTileList, int rowResID, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         this.activity = activity;
@@ -58,7 +59,9 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onClickListener.onClick(v, finalPosition);
+                            if (onClickListener != null) {
+                                onClickListener.onClick(v, finalPosition);
+                            }
                         }
                     });
                 }
@@ -73,6 +76,8 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
             }
 
+        }else {
+            throw new RuntimeException("Unable to cast custom ViewHolder");
         }
     }
 
@@ -131,7 +136,6 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
                 } else if (viewGetterMethod.getReturnType().isInstance(Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888))) {
                     ((ImageView) view).setImageBitmap((Bitmap) viewGetterMethod.invoke(item));
                 }
-                return;
             }
         }
     }

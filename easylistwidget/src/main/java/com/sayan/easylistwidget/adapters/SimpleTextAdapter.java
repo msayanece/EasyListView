@@ -61,6 +61,8 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
                 });
                 onBindViewHolderCalledListener.onBasicBindViewHolder(simpleTextViewHolder, items.get(position), position);
             }
+        }else {
+            throw new RuntimeException("Unable to cast custom ViewHolder");
         }
     }
 
