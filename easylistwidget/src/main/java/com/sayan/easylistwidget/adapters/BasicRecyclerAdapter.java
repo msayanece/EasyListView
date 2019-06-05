@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class BasicRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Activity activity;
     private final List<T> items;
@@ -27,7 +27,7 @@ public class SimpleTextAdapter<T> extends RecyclerView.Adapter<RecyclerView.View
     private final EasyListView.OnItemClickListener onClickListener;
     private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
 
-    public SimpleTextAdapter(Activity activity, List<T> items, int size, ListTile listTile, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
+    public BasicRecyclerAdapter(Activity activity, List<T> items, int size, ListTile listTile, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         this.activity = activity;
         this.items = items;
         this.size = size;
