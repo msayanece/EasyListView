@@ -46,23 +46,23 @@ public class BasicRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof SimpleTextViewHolder) {
-            try {
-                SimpleTextViewHolder<T> simpleTextViewHolder = (SimpleTextViewHolder<T>) viewHolder;
-                if (onBindViewHolderCalledListener == null) {
-                    simpleTextViewHolder.setData(items, listTile, position);
-                }else {
-                    final int finalPosition = position;
-                    simpleTextViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onClickListener.onClick(v, finalPosition );
+            SimpleTextViewHolder<T> simpleTextViewHolder = (SimpleTextViewHolder<T>) viewHolder;
+            if (onBindViewHolderCalledListener == null) {
+                simpleTextViewHolder.setData(items, listTile, position);
+            } else {
+                final int finalPosition = position;
+                simpleTextViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onClickListener != null) {
+                            onClickListener.onClick(v, finalPosition);
                         }
-                    });
-                    onBindViewHolderCalledListener.onBasicBindViewHolder(simpleTextViewHolder, items.get(position), position);
-                }
-            } catch (ClassCastException e) {
-                e.printStackTrace();
+                    }
+                });
+                onBindViewHolderCalledListener.onBasicBindViewHolder(simpleTextViewHolder, items.get(position), position);
             }
+        }else {
+            throw new RuntimeException("Unable to cast custom ViewHolder");
         }
     }
 
@@ -73,7 +73,7 @@ public class BasicRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                 return 0;
             }
             return items.size();
-        }else return size;
+        } else return size;
     }
 
     public static class SimpleTextViewHolder<T> extends RecyclerView.ViewHolder {
@@ -97,10 +97,10 @@ public class BasicRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
         }
 
         void setData(List<T> items, ListTile listTile, final int position) {
-            if (listTile.getItemsPOJOClass() == null ){
+            if (listTile.getItemsPOJOClass() == null) {
                 throw new IllegalArgumentException("Item POJO class must not be null in ListTile");
             }
-            if (listTile.getDescription() == null && listTile.getIcon() == null && listTile.getTitle() == null ){
+            if (listTile.getDescription() == null && listTile.getIcon() == null && listTile.getTitle() == null) {
                 throw new IllegalArgumentException("At least one of {title, description and icon} " +
                         "must be set in ListTile to use the default behavior");
             }
