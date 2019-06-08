@@ -28,7 +28,7 @@ To know how to use this library, kindly see - [SampleEasyListView](https://githu
 ``` gradle
 dependencies {
     ...
-    implementation 'com.github.msayanece:EasyListView:0.0.7'
+    implementation 'com.github.msayanece:EasyListView:0.0.8'
 }
 ```
 **In Project Gradle File**
