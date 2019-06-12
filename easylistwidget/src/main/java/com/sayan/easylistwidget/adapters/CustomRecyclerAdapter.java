@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sayan.easylistwidget.EasyListView;
 import com.sayan.easylistwidget.Utils;
@@ -25,8 +26,10 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
     private int size;
     private List<CustomListTile> customListTileList;
     private final int rowResID;
-    @Nullable private final EasyListView.OnItemClickListener onClickListener;
-    @Nullable private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
+    @Nullable
+    private final EasyListView.OnItemClickListener onClickListener;
+    @Nullable
+    private EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener;
 
     public CustomRecyclerAdapter(Activity activity, List<T> items, int size, List<CustomListTile> customListTileList, int rowResID, EasyListView.OnItemClickListener onClickListener, EasyListView.OnBindViewHolderCalledListener<T> onBindViewHolderCalledListener) {
         this.activity = activity;
@@ -51,33 +54,48 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
             CustomRecyclerViewHolder<T> customRecyclerViewHolder = (CustomRecyclerViewHolder<T>) viewHolder;
             if (onBindViewHolderCalledListener == null) {
                 customRecyclerViewHolder.setData(activity, items, customListTileList, onClickListener, position);
+            } else if (customListTileList == null) {
+                if (onClickListener != null) {
+                    customRecyclerViewHolder.itemView.setOnClickListener(new CustomOnClickListener(onClickListener, position));
+                }
+                onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
+            } else if (customListTileList.isEmpty()) {
+                if (onClickListener != null) {
+                    customRecyclerViewHolder.itemView.setOnClickListener(new CustomOnClickListener(onClickListener, position));
+                }
+                onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
             } else {
-                final int finalPosition = position;
                 for (CustomListTile customListTile :
                         customListTileList) {
                     View view = customRecyclerViewHolder.itemView.findViewById(customListTile.getViewResID());
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (onClickListener != null) {
-                                onClickListener.onClick(v, finalPosition);
-                            }
-                        }
-                    });
-                }
-                customRecyclerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (onClickListener != null) {
-                            onClickListener.onClick(v, finalPosition);
-                        }
+                    if (onClickListener != null) {
+                        customRecyclerViewHolder.itemView.setOnClickListener(new CustomOnClickListener(onClickListener, position));
                     }
-                });
+                }
+                if (onClickListener != null) {
+                    customRecyclerViewHolder.itemView.setOnClickListener(new CustomOnClickListener(onClickListener, position));
+                }
                 onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
             }
 
-        }else {
+        } else {
             throw new RuntimeException("Unable to cast custom ViewHolder");
+        }
+    }
+
+    private static class CustomOnClickListener implements View.OnClickListener {
+
+        private final EasyListView.OnItemClickListener onClickListener;
+        private final int finalPosition;
+
+        CustomOnClickListener(EasyListView.OnItemClickListener onClickListener, int finalPosition){
+
+            this.onClickListener = onClickListener;
+            this.finalPosition = finalPosition;
+        }
+        @Override
+        public void onClick(View v) {
+            onClickListener.onClick(v, finalPosition);
         }
     }
 

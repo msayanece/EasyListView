@@ -15,7 +15,6 @@ public class CustomItemsPOJO {
         this.button = button;
     }
 
-    @ID(R.id.titleTextView)
     public String getName() {
         return name;
     }
@@ -24,7 +23,6 @@ public class CustomItemsPOJO {
         this.name = name;
     }
 
-    @ID(R.id.leadingImageView)
     public String getImage() {
         return image;
     }
@@ -33,7 +31,6 @@ public class CustomItemsPOJO {
         this.image = image;
     }
 
-    @ID(R.id.descriptionTextView)
     public String getDesc() {
         return desc;
     }
@@ -42,7 +39,6 @@ public class CustomItemsPOJO {
         this.desc = desc;
     }
 
-    @ID(R.id.button)
     public String getButton() {
         return button;
     }
