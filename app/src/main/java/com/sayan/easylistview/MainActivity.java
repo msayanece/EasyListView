@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.sayan.easylistwidget.EasyListView;
 import com.sayan.easylistwidget.adapters.CustomRecyclerAdapter;
-import com.sayan.easylistwidget.adapters.SimpleTextAdapter;
+import com.sayan.easylistwidget.adapters.BasicRecyclerAdapter;
 import com.sayan.easylistwidget.listtiles.ListTile;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                     .addDescription("getDesc")
                     .addIcon(EasyListView.IconPosition.LEADING, "getImage");
 
-            new EasyListView.Builder<ItemsPOJO>(this)
+            EasyListView easyListView = new EasyListView.Builder<ItemsPOJO>(this)
                     .addRecyclerView(recyclerView)
                     .addListItems(listItems)
                     .addItemModel(ItemsPOJO.class)
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                     .setCount(listItems.size())
                     .setOnBindViewHolderCalledListener(new EasyListView.OnBindViewHolderCalledListener<ItemsPOJO>() {
                         @Override
-                        public void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<ItemsPOJO> viewHolder, ItemsPOJO itemOnThatPosition, int position) {
+                        public void onBasicBindViewHolder(@NonNull BasicRecyclerAdapter.SimpleTextViewHolder<ItemsPOJO> viewHolder, ItemsPOJO itemOnThatPosition, int position) {
                             viewHolder.titleTextView.setText(itemOnThatPosition.getDesc());
                         }
 
@@ -84,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                         }
                     })
                     .build();
+            // get adapter and do whatever you want with it
+            BasicRecyclerAdapter customAdapter = easyListView.getBasicRecyclerAdapter();
+
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
     }
 
     private void showCustomRecyclerView(RecyclerView recyclerView, List<CustomItemsPOJO> listItems, int childResId) {
-        new EasyListView.Builder<CustomItemsPOJO>(this)
+        EasyListView easyListView = new EasyListView.Builder<CustomItemsPOJO>(this)
                 .addRecyclerView(recyclerView)
                 .addListItems(listItems)
                 .addLayoutManager(new LinearLayoutManager(this)) //optional
@@ -101,16 +104,18 @@ public class MainActivity extends AppCompatActivity implements EasyListView.OnIt
                 .setOnItemClickListener(this)                           //optional
                 .setOnBindViewHolderCalledListener(new EasyListView.OnBindViewHolderCalledListener<CustomItemsPOJO>() {
                     @Override
-                    public void onBasicBindViewHolder(@NonNull SimpleTextAdapter.SimpleTextViewHolder<CustomItemsPOJO> viewHolder, CustomItemsPOJO itemOnThatPosition, int position) {
+                    public void onBasicBindViewHolder(@NonNull BasicRecyclerAdapter.SimpleTextViewHolder<CustomItemsPOJO> viewHolder, CustomItemsPOJO itemOnThatPosition, int position) {
                         //will not be called for custom recycler view
                     }
 
                     @Override
                     public void onCustomBindViewHolder(@NonNull CustomRecyclerAdapter.CustomRecyclerViewHolder<CustomItemsPOJO> viewHolder, CustomItemsPOJO itemOnThatPosition, int position) {
-                        ((TextView)viewHolder.itemView.findViewById(R.id.descriptionTextView)).setText(itemOnThatPosition.getName());
+                        ((TextView) viewHolder.itemView.findViewById(R.id.descriptionTextView)).setText(itemOnThatPosition.getName());
                     }
                 })                                                      //optional
                 .build();
+        // get adapter and do whatever you want with it
+        CustomRecyclerAdapter customAdapter = easyListView.getCustomAdapter();
     }
 
     @Override
