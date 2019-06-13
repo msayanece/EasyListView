@@ -57,11 +57,13 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
             } else if (customListTileList == null) {
                 if (onClickListener != null) {
                     customRecyclerViewHolder.itemView.setOnClickListener(new CustomOnClickListener(onClickListener, position));
+                    setOnClickListenersToChild(onClickListener, customRecyclerViewHolder.itemView, position);
                 }
                 onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
             } else if (customListTileList.isEmpty()) {
                 if (onClickListener != null) {
                     customRecyclerViewHolder.itemView.setOnClickListener(new CustomOnClickListener(onClickListener, position));
+                    setOnClickListenersToChild(onClickListener, customRecyclerViewHolder.itemView, position);
                 }
                 onBindViewHolderCalledListener.onCustomBindViewHolder(customRecyclerViewHolder, items.get(position), position);
             } else {
@@ -80,6 +82,25 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
 
         } else {
             throw new RuntimeException("Unable to cast custom ViewHolder");
+        }
+    }
+
+    private void setOnClickListenersToChild(EasyListView.OnItemClickListener onClickListener, View itemView, int position) {
+        boolean isViewGroup = false;
+        ViewGroup itemViewGroup = null;
+        try {
+            itemViewGroup = (ViewGroup) itemView;
+            isViewGroup = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            isViewGroup = false;
+        }
+        if (isViewGroup) {
+            for (int i = 0; i < itemViewGroup.getChildCount(); i++) {
+                View child = itemViewGroup.getChildAt(i);
+                child.setOnClickListener(new CustomOnClickListener(onClickListener, position));
+                setOnClickListenersToChild(onClickListener, child, position);
+            }
         }
     }
 
