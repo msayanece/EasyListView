@@ -224,6 +224,7 @@ public class EasyListView {
 
         /**
          * set the listener on the child views in the recycler
+         * make all the views of your child clickable = true for getting a callback, otherwise make it false
          * @param onClickListener the listener object
          * @see OnItemClickListener
          * @return the Builder class object itself
