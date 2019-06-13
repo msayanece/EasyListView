@@ -98,7 +98,8 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         if (isViewGroup) {
             for (int i = 0; i < itemViewGroup.getChildCount(); i++) {
                 View child = itemViewGroup.getChildAt(i);
-                child.setOnClickListener(new CustomOnClickListener(onClickListener, position));
+                if (child.isClickable() || child.isFocusable())
+                    child.setOnClickListener(new CustomOnClickListener(onClickListener, position));
                 setOnClickListenersToChild(onClickListener, child, position);
             }
         }
@@ -109,11 +110,12 @@ public class CustomRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.
         private final EasyListView.OnItemClickListener onClickListener;
         private final int finalPosition;
 
-        CustomOnClickListener(EasyListView.OnItemClickListener onClickListener, int finalPosition){
+        CustomOnClickListener(EasyListView.OnItemClickListener onClickListener, int finalPosition) {
 
             this.onClickListener = onClickListener;
             this.finalPosition = finalPosition;
         }
+
         @Override
         public void onClick(View v) {
             onClickListener.onClick(v, finalPosition);
