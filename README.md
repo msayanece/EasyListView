@@ -28,7 +28,7 @@ To know how to use this library, kindly see - [SampleEasyListView](https://githu
 ``` gradle
 dependencies {
     ...
-    implementation 'com.github.msayanece:EasyListView:0.0.8'
+    implementation 'com.github.msayanece:EasyListView:0.1.1'
 }
 ```
 **In Project Gradle File**
@@ -74,7 +74,7 @@ If you Watch this repository, GitHub will send you an email every time I publish
                     .setCount(listItems.size())               // Optional set item count
                     .setOnItemClickListener(this)             // Optional set on click listener
                     .setOnBindViewHolderCalledListener(this)  // Optional set on bind view holder to write your own logic
-                    .Build();
+                    .build();
 ```
 
 
@@ -143,7 +143,7 @@ public class TestPOJO {
                 .addRow(R.layout.child_layout)                      // The custom layout of Recycler child 
                 .setOnItemClickListener(this)                       //Optional
                 .setOnBindViewHolderCalledListener(this)            //Optional, if you want to execute your own logic
-                .Build();
+                .build();
 ```
 
  * If you want you may write your own logic inside the callback methods of the OnBindViewHolderCalledListener.
